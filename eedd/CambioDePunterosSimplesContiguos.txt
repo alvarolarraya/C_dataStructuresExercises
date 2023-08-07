@@ -1,0 +1,10 @@
+acción intercambiarPunterosSimples (e/s l:lista, ent ant: ref celda);
+    var
+        ant: ref.s;
+    fvar
+    aux:= ant ref.sig;
+    ant ref.sig:= aux ref.sig;
+    ant:= ant ref.sig;
+    aux ref.sig:= ant ref.sig;
+    ant ref.sig:= aux;
+facción;

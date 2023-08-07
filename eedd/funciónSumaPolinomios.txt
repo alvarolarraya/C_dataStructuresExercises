@@ -1,0 +1,134 @@
+Tipo: polinomio (nodo)
+Incluye: booleano
+Operaciones:
+    suma: polinomio, polinomio -> polinomio
+    quitarCoefNulo: polinomio -> polinomio
+    polinVacio: polinomio -> booleano
+tipo
+    polinomio: ref nodo
+    nodo= tupla
+        coef: entero
+        grado: entero
+        sig: ref nodo
+    ftupla
+ftipo
+función suma (p,q: polinomio) dev r:polinomio;
+    var
+        aux_p, aux1, aux2: nodo;
+        invertir: pila de nodos;
+    fvar
+    quitarCoefNulo(p);
+    quitarCoefNulo(q);
+    si no polinVacio(p) y no polinVacio(q) ->   nuevaPila(invertir);
+                                                aux1:= p ref;
+                                                aux2:= q ref;
+                                                mientras aux1.sig <> nil y aux2.sig<>nil hacer
+                                                    si aux1.grado < aux2.grado -> aux_p:= aux2;
+                                                                                  apilar(invertir, aux_p);
+                                                                                  aux2:= aux2.sig;
+                                                    [] aux1.grado > aux2.grado -> aux_p:= aux1;
+                                                                                  apilar(invertir, aux_p);
+                                                                                  aux1:= aux1.sig;
+                                                    [] aux1.grado = aux2.grado -> aux_p:= aux1;
+                                                                                  aux_p.coef:= aux_p.coef + aux2.coef;
+                                                                                  apilar(invertir, aux_p);
+                                                                                  aux2:= aux2.sig;
+                                                                                  aux1:= aux1.sig;
+                                                    fsi
+                                                fmientras
+                                                si aux1.sig <> nil -> mientras aux1.sig <> nil y aux1.grado > aux2.grado hacer
+                                                                        aux_p:= aux1;
+                                                                        apilar(invertir, aux_p);
+                                                                        aux1:= aux1.sig;
+                                                                      fmientras
+                                                                      si aux1.grado <= aux2.grado -> si aux1.grado = aux2.grado -> aux_p:= aux1;
+                                                                                                                                   aux_p.coef:= aux_p.coef + aux2.coef;
+                                                                                                                                   apilar(invertir, aux_p);
+                                                                                                                                   aux1:= aux1.sig;
+                                                                                                      [] aux2.grado > aux1.grado -> continuar;
+                                                                                                      mientras aux1.sig <> nil hacer
+                                                                                                        aux_p:= aux1;
+                                                                                                        apilar(invertir,aux_p);
+                                                                                                        aux1:= aux1.sig;
+                                                                                                      fmientras
+                                                                      [] aux1.grado > aux2.grado -> aux.p:= aux1;
+                                                                                                    apilar(invertir, aux_p);
+                                                                                                    aux_p:= aux2;
+                                                                                                    apilar(invertir, aux_p);
+                                                                      fsi
+                                                [] aux2.sig <> nil -> mientras aux2.sig <> nil y aux2.grado > aux1.grado hacer
+                                                                        aux_p:= aux2;
+                                                                        apilar(invertir, aux_p);
+                                                                        aux2:= aux2.sig;
+                                                                      fmientras
+                                                                      si aux2.grado <= aux1.grado -> si aux2.grado = aux1.grado -> aux_p:= aux2;
+                                                                                                                                   aux_p.coef:= aux_p.coef + aux1.coef;
+                                                                                                                                   apilar(invertir, aux_p);
+                                                                                                                                   aux2:= aux2.sig;
+                                                                                                      [] aux1.grado > aux2.grado -> continuar;
+                                                                                                      mientras aux2.sig <> nil hacer
+                                                                                                        aux_p:= aux2;
+                                                                                                        apilar(invertir,aux_p);
+                                                                                                        aux2:= aux2.sig;
+                                                                                                      fmientras
+                                                                      [] aux2.grado > aux1.grado -> aux.p:= aux2;
+                                                                                                    apilar(invertir, aux_p);
+                                                                                                    aux_p:= aux1;
+                                                                                                    apilar(invertir, aux_p);
+                                                                      fsi
+                                                [] aux2.sig = nil y aux1.sig = nil -> si aux2.grado < au1.grado -> aux_p:= aux1;
+                                                                                                                   apilar(invertir, aux_p);
+                                                                                                                   aux_p:= aux2;
+                                                                                                                   apilar(invertir, aux_p);
+                                                                                      [] aux1.grado < aux2.grado -> aux_p:= aux2;
+                                                                                                                    apilar(invertir, aux_p);
+                                                                                                                    aux_p:= aux1;
+                                                                                                                    apilar(invertir, aux_p);
+                                                                                      [] aux1.grado = aux2.grado -> aux_p:= aux1;
+                                                                                                                    aux_p.coef:= aux_p.coef + aux2.coef;
+                                                                                                                    apilar(invertir, aux_p);
+                                                                                      fsi
+                                                fsi
+                                                cima(invertir,aux_p);
+                                                aux_p.sig:= nil;
+                                                r ref:= aux_p;
+                                                mientras no esNula(invertir) hacer
+                                                    cima(invertir,aux_p);
+                                                    aux_p.sig:= r ref;
+                                                    r ref:= aux_p;
+                                                    desapilar(invertir);
+                                                fmientras
+    [] polinVacio(p) o polinVacio(q) -> si polinVacio(p) y no polinVacio(q) -> r:= q;
+                                        [] no polinVacio(p) y polinVacio(q) -> r:= p;
+                                        [] polinVacio(p) y polinVacio(q) -> r ref:= nil;
+    fsi
+    dev r;
+ffunción;
+// ENTRADA: p, polinomio
+// REQUISITOS: Ninguno
+// MODIFICA: elimina los coeficientes de valor 0 de los polinomios;
+acción quitarCoefNulo (e/s p: polinomio);
+    var
+        ant,aux: nodo;
+    fvar
+    si p ref <> nil -> aux:= p ref;
+                       mientras no aux.grado <> 0 y aux.sig <> nil hacer
+                            aux:= aux.sig;
+                       fmientras
+                       ant:= aux;
+                       mientras aux.sig <> nil hacer
+                            aux:= aux.sig;
+                            si aux.grado = 0 -> ant.sig:= aux.sig;
+                            [] aux.grado <> 0 -> continuar;
+                       fmientras
+    [] p ref = nil -> continuar
+facción;
+// ENTRADA: p, polinomio
+// REQUISITOS: Ninguno
+// SALIDA: b, booleano que se hace cierto si p no apunta a ningún nodo;
+función polinVacio (p:polinomio) dev b:booleano;
+    si p ref = nil -> b:= Verdadero;
+    [] p ref <> nil -> b:= Falso;
+    fsi
+    dev b;
+ffunción
